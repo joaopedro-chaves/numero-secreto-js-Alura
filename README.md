@@ -2,6 +2,8 @@
 
 Descobra o número secreto, esse projeto foi feito ultilizando o material incluido no curso: Lógica de Programção com Javescript da Alura
 
+[Execultar](https://joaopedro-chaves.github.io/numero-secreto-js-Alura/)
+
 ![demonstração do projeto](img/demo.gif)
 
 ## Roadmap
