@@ -199,6 +199,8 @@ h1 {
     color: rgba(230, 225, 229, 0.38);
     cursor: not-allowed;
     box-shadow: none;
+    transform: scale(0.98);
+    filter: grayscale(0.5);
 }
 
 @media screen and (max-width: 600px) {

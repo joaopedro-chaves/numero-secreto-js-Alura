@@ -3,6 +3,7 @@ let numeroLimite = 10;
 let numeroSecreto = gerarNumeroAleatorio();
 let tentativas = 1;
 
+// Exibe o texto na tela
 function exibirTextoNaTela(tag, texto) {
     let campo = document.querySelector(tag);
     campo.innerHTML = texto;
@@ -11,6 +12,7 @@ function exibirTextoNaTela(tag, texto) {
     }
 }
 
+// Exibe a mensagem inicial
 function exibirMensagemInicial() {
     exibirTextoNaTela('h1', 'Jogo do número secreto');
     exibirTextoNaTela('p', `Escolha um número entre 1 e ${numeroLimite}`);
@@ -18,16 +20,18 @@ function exibirMensagemInicial() {
 
 exibirMensagemInicial();
 
-// Ativa/Desativa o botão chutar de acordo com o input
+// Ativa/Desativa o botão chutar de acordo com o input, mas só se o jogo não tiver acabado
 document.querySelector('input').addEventListener('input', function () {
     const botaoChutar = document.getElementById('chutar');
-    if (this.value !== '') {
-        botaoChutar.removeAttribute('disabled');
-    } else {
-        botaoChutar.setAttribute('disabled', true);
+    const botaoreiniciar = document.getElementById('reiniciar');
+
+    // Se o botão Novo Jogo estiver ativado, o jogo acabou, então mantemos o Chutar desativado
+    if (botaoreiniciar.disabled) {
+        botaoChutar.disabled = this.value === '';
     }
 });
 
+// Verifica o chute do jogador
 function verificarChute() {
     let campoInput = document.querySelector('input');
     let chute = parseInt(campoInput.value);
@@ -40,8 +44,9 @@ function verificarChute() {
         let mensagemTentativas = `Você descobriu o número secreto com ${tentativas} ${palavraTentativa}!`;
         exibirTextoNaTela('p', mensagemTentativas);
 
-        document.getElementById('reiniciar').removeAttribute('disabled');
-        document.getElementById('chutar').setAttribute('disabled', true);
+        document.getElementById('reiniciar').disabled = false;
+        document.getElementById('chutar').disabled = true;
+        campoInput.disabled = true; // Desativa o input ao vencer
 
         confetti({
             particleCount: 150,
@@ -58,10 +63,11 @@ function verificarChute() {
         tentativas++;
         limparCampo();
         campoInput.focus();
-        document.getElementById('chutar').setAttribute('disabled', true); // Desativa após limpar
+        document.getElementById('chutar').disabled = true;
     }
 }
 
+// Gera um número aleatório
 function gerarNumeroAleatorio() {
     let numeroEscolhido = parseInt(Math.random() * numeroLimite + 1);
     let quantidadeDeElementosNaLista = listaDeNumerosSorteados.length;
@@ -78,17 +84,20 @@ function gerarNumeroAleatorio() {
     }
 }
 
+// Limpa o campo de input
 function limparCampo() {
     let chute = document.querySelector('input');
     chute.value = '';
 }
 
+// Reinicia o jogo
 function reiniciarJogo() {
     numeroSecreto = gerarNumeroAleatorio();
     limparCampo();
     tentativas = 1;
     exibirMensagemInicial();
-    document.getElementById('reiniciar').setAttribute('disabled', true);
+    document.getElementById('reiniciar').disabled = true;
+    document.querySelector('input').disabled = false; // Reativa o input
     document.querySelector('h1').classList.remove('win-anim');
 }
 
